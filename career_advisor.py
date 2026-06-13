@@ -1,87 +1,89 @@
 import streamlit as st
 
 # --------------------------
-# University Data
+# University Database
 # --------------------------
 universities = [
     {
         "University": "NUST",
         "Programs": "BS Computer Science, BS AI, BS Software Engineering, BS Electrical Engineering, BBA",
-        "Min Marks": 60,
-        "Max Fee (PKR)": 260000,
-        "Merit Range": "85% – 92%",
-        "Admission": "May – June",
+        "Min_Marks": 60,
+        "Max_Fee_Per_Semester": 260000,
+        "Merit_Range": "85% – 92%",
+        "Admission_Period": "May – June",
         "Deadline": "Mid July",
-        "Career Scope": "High demand, starting salary 70k – 150k+",
-        "HEC Recognized": "✅ Yes"
+        "Career_Scope": "High demand, starting salary 70,000 – 150,000+",
+        "HEC_Recognized": "✅ Yes"
     },
     {
         "University": "COMSATS University Islamabad",
         "Programs": "BS CS, BS AI, BS SE, BS Cyber Security, BBA",
-        "Min Marks": 50,
-        "Max Fee (PKR)": 130000,
-        "Merit Range": "75% – 88%",
-        "Admission": "June – July",
+        "Min_Marks": 50,
+        "Max_Fee_Per_Semester": 130000,
+        "Merit_Range": "75% – 88%",
+        "Admission_Period": "June – July",
         "Deadline": "End August",
-        "Career Scope": "Strong industry demand, 50k – 120k+",
-        "HEC Recognized": "✅ Yes"
+        "Career_Scope": "Strong industry demand, 50,000 – 120,000+",
+        "HEC_Recognized": "✅ Yes"
     },
     {
         "University": "FAST‑NUCES Islamabad",
         "Programs": "BS Computer Science, BS Artificial Intelligence, BS Software Engineering",
-        "Min Marks": 60,
-        "Max Fee (PKR)": 190000,
-        "Merit Range": "82% – 90%",
-        "Admission": "May – July",
+        "Min_Marks": 60,
+        "Max_Fee_Per_Semester": 190000,
+        "Merit_Range": "82% – 90%",
+        "Admission_Period": "May – July",
         "Deadline": "Mid July",
-        "Career Scope": "Top software sector, 80k – 180k+",
-        "HEC Recognized": "✅ Yes"
+        "Career_Scope": "Top software sector, 80,000 – 180,000+",
+        "HEC_Recognized": "✅ Yes"
     },
     {
         "University": "International Islamic University (IIUI)",
         "Programs": "BS CS, BS SE, BBA, BS Electrical Engineering, BS Psychology",
-        "Min Marks": 50,
-        "Max Fee (PKR)": 70000,
-        "Merit Range": "60% – 75%",
-        "Admission": "June – July",
+        "Min_Marks": 50,
+        "Max_Fee_Per_Semester": 70000,
+        "Merit_Range": "60% – 75%",
+        "Admission_Period": "June – July",
         "Deadline": "End August",
-        "Career Scope": "Affordable, good public & private jobs",
-        "HEC Recognized": "✅ Yes"
+        "Career_Scope": "Affordable, good public & private jobs",
+        "HEC_Recognized": "✅ Yes"
     },
     {
         "University": "Air University Islamabad",
         "Programs": "BS CS, BS SE, BS Electrical Engineering, BBA",
-        "Min Marks": 60,
-        "Max Fee (PKR)": 150000,
-        "Merit Range": "78% – 86%",
-        "Admission": "June – July",
+        "Min_Marks": 60,
+        "Max_Fee_Per_Semester": 150000,
+        "Merit_Range": "78% – 86%",
+        "Admission_Period": "June – July",
         "Deadline": "Early August",
-        "Career Scope": "Good reputation, aviation & IT jobs",
-        "HEC Recognized": "✅ Yes"
+        "Career_Scope": "Good reputation, aviation & IT jobs",
+        "HEC_Recognized": "✅ Yes"
     }
 ]
 
 # --------------------------
-# App Interface
+# App Layout
 # --------------------------
-st.set_page_config(page_title="AI Career Advisor Pakistan", layout="wide")
+st.set_page_config(page_title="AI Career Advisor | Pakistan", layout="wide")
 st.title("🎓 AI Career Advisor — For Pakistani Students")
-st.write("Find the best universities and programs based on your marks, study stream and budget.")
+st.write("Find universities, eligibility, fees, deadlines and career paths matching your marks, study stream and budget.")
 
+# User Inputs
 marks = st.number_input("Your Intermediate / A‑Level Percentage", min_value=33, max_value=100, value=60)
 stream = st.selectbox("Your Study Stream", ["FSc Pre‑Engineering", "FSc Pre‑Medical", "ICS / Computer Science", "Commerce", "Arts / Humanities"])
 budget = st.number_input("Max Budget per Semester (PKR, thousands)", min_value=20, max_value=300, value=200)
 
+# Filter & Show Results
 if st.button("🔍 Find My Universities"):
-    results = []
+    matches = []
     for uni in universities:
-        if marks >= uni["Min Marks"] and budget * 1000 >= uni["Max Fee (PKR)"]:
-            results.append(uni)
+        if marks >= uni["Min_Marks"] and (budget * 1000) >= uni["Max_Fee_Per_Semester"]:
+            matches.append(uni)
 
-    if results:
-        st.success(f"✅ Found {len(results)} matching universities:")
-        st.table(results)
+    if matches:
+        st.success(f"✅ Found {len(matches)} matching universities:")
+        st.table(matches)
     else:
         st.warning("⚠️ No matches found. Try increasing your marks or budget.")
 
-st.info("ℹ️ Data source: Official university prospectuses 2026 | All HEC‑recognized")
+st.info("ℹ️ Data source: Official university prospectuses 2026 | All universities are HEC‑recognized")
