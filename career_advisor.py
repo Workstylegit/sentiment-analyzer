@@ -1,120 +1,87 @@
 import streamlit as st
-import pandas as pd
 
 # --------------------------
-# 🎓 University Database (Islamabad, 2026 Official Prospectus Data)
+# University Data
 # --------------------------
-uni_data = pd.DataFrame([
+universities = [
     {
         "University": "NUST",
-        "Programs": "BS Computer Science, BS Artificial Intelligence, BS Software Engineering, BS Electrical Engineering, BBA",
-        "Eligibility": "Matric ≥60%, FSc/ICS/A‑Levels ≥60%, Clear NET Entry Test",
+        "Programs": "BS Computer Science, BS AI, BS Software Engineering, BS Electrical Engineering, BBA",
+        "Min Marks": 60,
+        "Max Fee (PKR)": 260000,
         "Merit Range": "85% – 92%",
-        "Fees Per Semester": "PKR 190,000 – 260,000",
-        "Admission Period": "May – June",
+        "Admission": "May – June",
         "Deadline": "Mid July",
-        "Career Scope": "Top jobs in tech, government, multinational firms; starting salary ~70,000 – 150,000+",
+        "Career Scope": "High demand, starting salary 70k – 150k+",
         "HEC Recognized": "✅ Yes"
     },
     {
         "University": "COMSATS University Islamabad",
-        "Programs": "BS CS, BS AI, BS SE, BS Cyber Security, BBA, BS Accounting & Finance",
-        "Eligibility": "Matric ≥50%, FSc/ICS ≥50%, Entry Test or NTS",
+        "Programs": "BS CS, BS AI, BS SE, BS Cyber Security, BBA",
+        "Min Marks": 50,
+        "Max Fee (PKR)": 130000,
         "Merit Range": "75% – 88%",
-        "Fees Per Semester": "PKR 90,000 – 130,000",
-        "Admission Period": "June – July",
+        "Admission": "June – July",
         "Deadline": "End August",
-        "Career Scope": "Strong industry demand; starting salary ~50,000 – 120,000",
+        "Career Scope": "Strong industry demand, 50k – 120k+",
         "HEC Recognized": "✅ Yes"
     },
     {
         "University": "FAST‑NUCES Islamabad",
         "Programs": "BS Computer Science, BS Artificial Intelligence, BS Software Engineering",
-        "Eligibility": "Matric ≥60%, FSc/ICS ≥60%, FAST Entry Test",
+        "Min Marks": 60,
+        "Max Fee (PKR)": 190000,
         "Merit Range": "82% – 90%",
-        "Fees Per Semester": "PKR 150,000 – 190,000",
-        "Admission Period": "May – July",
+        "Admission": "May – July",
         "Deadline": "Mid July",
-        "Career Scope": "Best for software industry; starting salary ~80,000 – 180,000+",
+        "Career Scope": "Top software sector, 80k – 180k+",
         "HEC Recognized": "✅ Yes"
     },
     {
         "University": "International Islamic University (IIUI)",
-        "Programs": "BS CS, BS SE, BBA, BS Electrical Engineering, BS Psychology, BS Mass Communication",
-        "Eligibility": "Matric ≥50%, FSc/ICS/Commerce ≥50%, No entry test for most programs",
+        "Programs": "BS CS, BS SE, BBA, BS Electrical Engineering, BS Psychology",
+        "Min Marks": 50,
+        "Max Fee (PKR)": 70000,
         "Merit Range": "60% – 75%",
-        "Fees Per Semester": "PKR 40,000 – 70,000",
-        "Admission Period": "June – July",
+        "Admission": "June – July",
         "Deadline": "End August",
-        "Career Scope": "Good public & private sector jobs; very affordable",
-        "HEC Recognized": "✅ Yes"
-    },
-    {
-        "University": "NUTECH Islamabad",
-        "Programs": "BS CS, BS AI, BS Mechanical Engineering, BS Civil Engineering",
-        "Eligibility": "Matric ≥60%, FSc ≥50%, NUTECH Entry Test",
-        "Merit Range": "70% – 82%",
-        "Fees Per Semester": "PKR 80,000 – 110,000",
-        "Admission Period": "June – July",
-        "Deadline": "End August",
-        "Career Scope": "Growing demand in engineering & tech sector",
+        "Career Scope": "Affordable, good public & private jobs",
         "HEC Recognized": "✅ Yes"
     },
     {
         "University": "Air University Islamabad",
         "Programs": "BS CS, BS SE, BS Electrical Engineering, BBA",
-        "Eligibility": "Matric ≥60%, FSc ≥60%, Entry Test",
+        "Min Marks": 60,
+        "Max Fee (PKR)": 150000,
         "Merit Range": "78% – 86%",
-        "Fees Per Semester": "PKR 110,000 – 150,000",
-        "Admission Period": "June – July",
+        "Admission": "June – July",
         "Deadline": "Early August",
-        "Career Scope": "Good reputation, jobs in aviation & IT",
+        "Career Scope": "Good reputation, aviation & IT jobs",
         "HEC Recognized": "✅ Yes"
     }
-])
+]
 
 # --------------------------
-# 🎨 App Interface
+# App Interface
 # --------------------------
-st.set_page_config(page_title="AI Career Advisor | Pakistan", layout="wide")
+st.set_page_config(page_title="AI Career Advisor Pakistan", layout="wide")
 st.title("🎓 AI Career Advisor — For Pakistani Students")
-st.write("Get personalized guidance: which university, program, fees, deadlines and career path fits you best.")
+st.write("Find the best universities and programs based on your marks, study stream and budget.")
 
-# User Inputs
-col1, col2, col3 = st.columns(3)
-marks = col1.number_input("Your Intermediate / A‑Level Percentage", min_value=33, max_value=100, value=60)
-stream = col2.selectbox("Your Study Stream", ["FSc Pre‑Engineering", "FSc Pre‑Medical", "ICS / Computer Science", "Commerce", "Arts / Humanities"])
-budget = col3.number_input("Maximum Budget per Semester (PKR, thousands)", min_value=20, max_value=300, value=120)
+marks = st.number_input("Your Intermediate / A‑Level Percentage", min_value=33, max_value=100, value=60)
+stream = st.selectbox("Your Study Stream", ["FSc Pre‑Engineering", "FSc Pre‑Medical", "ICS / Computer Science", "Commerce", "Arts / Humanities"])
+budget = st.number_input("Max Budget per Semester (PKR, thousands)", min_value=20, max_value=300, value=200)
 
-# --------------------------
-# 🔍 Matching Logic
-# --------------------------
-if st.button("🔎 Get My Career Plan"):
-    def get_min_eligibility(text):
-        try:
-            return int(text.split("≥")[1].split("%")[0])
-        except:
-            return 50
+if st.button("🔍 Find My Universities"):
+    results = []
+    for uni in universities:
+        if marks >= uni["Min Marks"] and budget * 1000 >= uni["Max Fee (PKR)"]:
+            results.append(uni)
 
-    def get_max_fee(text):
-        try:
-            return int(text.split("–")[1].strip().replace(",", "").split(" ")[0])
-        except:
-            return 300
-
-    uni_data["Min Eligibility"] = uni_data["Eligibility"].apply(get_min_eligibility)
-    uni_data["Max Fee"] = uni_data["Fees Per Semester"].apply(lambda x: get_max_fee(x.replace("PKR ", "")))
-
-    results = uni_data[
-        (marks >= uni_data["Min Eligibility"]) &
-        (budget * 1000 >= uni_data["Max Fee"])
-    ].drop(columns=["Min Eligibility", "Max Fee"])
-
-    if not results.empty:
-        st.success(f"✅ Found {len(results)} matching universities/programs:")
-        st.dataframe(results, use_container_width=True)
-        st.info("📌 Next Steps: Visit the official university website, check test dates, and apply before the deadline!")
+    if results:
+        st.success(f"✅ Found {len(results)} matching universities:")
+        st.table(results)
     else:
-        st.warning("⚠️ No matching options found. Try adjusting your marks or budget.")
+        st.warning("⚠️ No matches found. Try increasing your marks or budget.")
 
-st.info("ℹ️ Data source: Official university prospectuses & admission portals (2026). All universities are HEC‑recognized.")
+st.info("ℹ️ Data source: Official university prospectuses 2026 | All HEC‑recognized")
